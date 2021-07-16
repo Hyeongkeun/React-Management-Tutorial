@@ -7,6 +7,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '@material-ui/core/styles';
 
 // const styles = theme => ({
@@ -27,10 +28,14 @@ const styles = theme => ({
   },
   table: {
     minWidth: 1080
+  },
+  progress: {
+    margin: theme.spacing(2)
   }
 })
 
-const customers = [{
+// 이제는 서버에 접속하여 데이터를 가져온다.
+/* const customers = [{
   'id': 1,
   'image': 'https://placeimg.com/64/64/1',
   'name': '이형근',
@@ -54,9 +59,32 @@ const customers = [{
   'gender': '남자',
   'job': '디자이너'
 }
-]
+]*/
 
 class App extends Component{
+
+  state = {
+    customers: "",
+    completed: 0
+  }
+
+  progress = () => {
+    const { completed } = this.state;
+    this.setState({ completed: completed >= 100 ? 0 : completed +1 });
+  }
+  componentDidMount() {
+    this.timer = setInterval(this.progress, 20);
+    this.callApi()
+      .then(res => this.setState({customers: res}))
+      .catch(err => console.log(err));
+  }
+
+  callApi = async () => {
+    const response = await fetch('/api/customers');
+    const body = await response.json();
+    return body;
+  }
+
   render(){
     const { classes } = this.props;
     return(
@@ -73,7 +101,8 @@ class App extends Component{
             </TableRow>
           </TableHead>
           <TableBody>
-            {customers.map(c => {
+          {/* this.state.customers 값은 초기에는 ""이므로 err가 난다. 따라서 값이 존재할 때만 map을 할 수 있도록 this.state.customers ?를 붙혀준다.*/}
+            {this.state.customers ? this.state.customers.map(c => {
               return(
                 <Customer
                   key={c.id} //map을 사용하기 위해서는 key 값이 필요
@@ -85,7 +114,12 @@ class App extends Component{
                   job={c.job}
                 />
               );
-            })
+            }) : 
+            <TableRow>
+              <TableCell colSpan="6" align="center">
+                <CircularProgress className={classes.progress} variant="determinate" value={this.state.completed}/>
+              </TableCell>
+            </TableRow>
             } 
           </TableBody>
         </Table>
