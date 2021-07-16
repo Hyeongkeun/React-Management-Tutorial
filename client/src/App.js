@@ -9,6 +9,16 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import { withStyles } from '@material-ui/core/styles';
 
+// const styles = theme => ({
+//   root: {
+//     width: '100%',
+//     marginTop: theme.spacing(3),
+//     overflowX: "auto" 
+//   },
+//   table: {
+//     minWidth: 1080
+//   }
+// })
 const styles = theme => ({
   root: {
     width: '100%',
@@ -31,10 +41,10 @@ const customers = [{
 {
   'id': 2,
   'image': 'https://placeimg.com/64/64/2',
-  'name': '홍길동',
-  'birthday': '900703',
-  'gender': '남자',
-  'job': '프로그래머'
+  'name': '김예지',
+  'birthday': '950805',
+  'gender': '여자',
+  'job': '뇌과학자'
 },
 {
   'id': 3,
@@ -48,8 +58,7 @@ const customers = [{
 
 class App extends Component{
   render(){
-    const { classes } = this.props; 
-    console.log(this.props);
+    const { classes } = this.props;
     return(
       <Paper className={classes.root}>
         <Table className={classes.table}>
@@ -64,22 +73,21 @@ class App extends Component{
             </TableRow>
           </TableHead>
           <TableBody>
-
+            {customers.map(c => {
+              return(
+                <Customer
+                  key={c.id} //map을 사용하기 위해서는 key 값이 필요
+                  id={c.id}
+                  image={c.image}
+                  name={c.name}
+                  birthday={c.birthday}
+                  gender={c.gender}
+                  job={c.job}
+                />
+              );
+            })
+            } 
           </TableBody>
-          {customers.map(c => {
-            return(
-              <Customer
-                key={c.id} //map을 사용하기 위해서는 key 값이 필요
-                id={c.id}
-                image={c.image}
-                name={c.name}
-                birthday={c.birthday}
-                gender={c.gender}
-                job={c.job}
-              />
-            );
-          })
-          } 
         </Table>
       </Paper>
     );
