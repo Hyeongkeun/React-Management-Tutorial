@@ -10,16 +10,6 @@ import TableCell from '@material-ui/core/TableCell';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from '@material-ui/core/styles';
 
-// const styles = theme => ({
-//   root: {
-//     width: '100%',
-//     marginTop: theme.spacing(3),
-//     overflowX: "auto" 
-//   },
-//   table: {
-//     minWidth: 1080
-//   }
-// })
 const styles = theme => ({
   root: {
     width: '100%',
@@ -70,7 +60,7 @@ class App extends Component{
 
   progress = () => {
     const { completed } = this.state;
-    this.setState({ completed: completed >= 100 ? 0 : completed +1 });
+    this.setState({ completed: completed >= 100 ? 0 : completed + 1});
   }
   componentDidMount() {
     this.timer = setInterval(this.progress, 20);
