@@ -54,10 +54,24 @@ const styles = theme => ({
 
 class App extends Component{
 
-  state = {
-    customers: "",
-    completed: 0
+  constructor(props) {
+    super(props);
+    this.state = {
+      customers: '',
+      completed: 0
+    }
   }
+
+  stateRefresh = () =>{
+    this.setState({
+      customers: '',
+      completed: 0
+    });
+
+    this.callApi()
+    .then(res => this.setState({customers: res}))
+    .catch(err => console.log(err));
+  } //이를 CustomerAdd.js에서 호출하면 부모컴포넌트인 App.js 컴포넌트의 state를 호출할 수 있다. --> 이렇게 된다면 전체 새로고침 없이 고객 목록만 바꿔서 바로 나타낼 수 있다. 하지만 상용에서는 전체 고객을 새로고침한다면 그것도 소스를 많이 잡아먹기 때문에 10개만 나타내는 형식으로 해서 이후 고객 정보는 scroll을 이용한다.
 
   progress = () => {
     const { completed } = this.state;
@@ -116,7 +130,7 @@ class App extends Component{
             </TableBody>
           </Table>
         </Paper>
-        <CustomerAdd/>
+        <CustomerAdd stateRefresh={this.stateRefresh} />
       </div>
 
     );

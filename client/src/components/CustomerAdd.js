@@ -35,7 +35,19 @@ class CustomerAdd extends React.Component{
         this.addCustomer()
             .then((response) => {
                 console.log(response.data);
+                this.props.stateRefresh(); //고객 정보를 입력받고 서버로부터 받아오기 위해서는 응답을 받고 refresh를 진행해준다. 
             })
+        this.setState({
+            file: null,
+            userName: '',
+            birthday: '',
+            gender: '',
+            job: '',
+            fileName: ''
+        })
+
+
+        //window.location.reload(); //react는 실제로 single page application(SPA) 형식으로 동작하기 때문에 전체 페이지를 새로고침하는 것은 비효율적. 따라서 이때는 부모컴포넌트에서 자식컴포넌트로 함수를 props 형태로 건네주는 방식으로 구현한다.
     }
 
     handleFileChange = (e) => {
