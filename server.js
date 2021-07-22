@@ -24,6 +24,7 @@ app.use('/image', express.static('./upload'));
 
 app.post('/api/customers', upload.single('image'), (req, res) => {
     let sql = `INSERT INTO CUSTOMER VALUES (null, ?, ?, ?, ?, ?, now(), 0)`;
+    console.log(req.file);
     let image = '/image/' + req.file.filename; //multer 라이브러리가 자동으로 이름을 겹치지 않게 한다.
     let name = req.body.name;
     let birthday = req.body.birthday;
